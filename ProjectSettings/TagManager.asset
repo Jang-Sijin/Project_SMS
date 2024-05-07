@@ -42,3 +42,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Map
+    uniqueID: 1544703809
+    locked: 0
+  - name: Player
+    uniqueID: 2149902307
+    locked: 0
+  - name: Pet
+    uniqueID: 4247893065
+    locked: 0
+  - name: Item
+    uniqueID: 828225957
+    locked: 0
+  - name: Enemy
+    uniqueID: 4221820609
+    locked: 0
