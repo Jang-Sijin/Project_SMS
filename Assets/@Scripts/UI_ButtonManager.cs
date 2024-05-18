@@ -8,25 +8,21 @@ public class UI_ButtonManager : MonoBehaviour
     public GameObject Map_A;
     public GameObject Map_B;
 
-    public void OnClickChangeSceneA()
+    public void OnClickChangeScene()
     {
+        // 초기 세팅: 맵 A에서 시작하도록 설정
         bool isActive = Map_A.activeSelf;
 
+        // 
         if (!isActive)
         {
             Map_A.SetActive(true);
-            Map_B.SetActive(false);
+            Map_B.SetActive(false);            
         }
-    }
-
-    public void OnClickChangeSceneB()
-    {
-        bool isActive = Map_B.activeSelf;
-
-        if (!isActive)
+        else
         {
-            Map_B.SetActive(true);
             Map_A.SetActive(false);
+            Map_B.SetActive(true);
         }
     }
 }
