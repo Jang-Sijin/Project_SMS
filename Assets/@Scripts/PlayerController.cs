@@ -1,22 +1,45 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+
+// Player는 State 패턴을 통해 상태가 전이되도록 구현 예정
 
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f; // 플레이어 이동 속도
     public GameObject projectilePrefab; // 발사할 스프라이트 프리팹
     public Transform firePoint; // 발사 위치
-    public float projectileSpeed = 10f; // 발사체 속도
-    public int hp = 100; // 플레이어 체력
+    public float projectileSpeed = 10f; // 발사체 속도    
     public float attackInterval = 0.1f; // 공격 주기 (초)
+
+    [SerializeField] PlayerHpBar _playerHpBar;
+
+    private int _hpMax = 100;
+    public int HpMax { get { return _hpMax; } }
+    private int _hp = 100; // 플레이어 체력
+    public int Hp 
+    { 
+        get { return _hp; } 
+        set 
+        {
+            _hp = value;
+            if (_playerHpBar != null && HpMax > 0)
+                _playerHpBar.SetHp(_hp, HpMax);
+        } 
+    }
 
     private Rigidbody2D rb;
     private Vector2 movement;
 
+    // ------------------------------------------------------    
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        
         StartCoroutine(AutoAttack());
     }
 
@@ -82,5 +105,22 @@ public class PlayerController : MonoBehaviour
         }
 
         return nearestMonster;
+    }
+
+    public void OnDamaged(Monster monster)
+    {
+        Hp = Math.Max(0, Hp - monster.Damage);
+    }
+
+
+    // 대미지를 입었을 경우
+    public void TakeDamage(int damage)
+    {
+        Hp -= damage;
+        if (Hp <= 0)
+        {
+            Hp = 0;            
+            gameObject.SetActive(false);
+        }
     }
 }
