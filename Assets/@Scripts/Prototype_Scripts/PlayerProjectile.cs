@@ -17,9 +17,32 @@ public class PlayerProjectile : MonoBehaviour
             }
             Destroy(gameObject);
         }
+
+        if (collision.CompareTag("BossMonster"))
+        {
+            BoosMonster bossMonster = collision.GetComponent<BoosMonster>();
+            if (bossMonster != null)
+            {
+                bossMonster.TakeDamage(playerDamage); // 예시로 10의 피해를 줌
+                StartCoroutine(HandleHit(bossMonster));
+            }
+            Destroy(gameObject);
+        }
     }
 
     private IEnumerator HandleHit(Monster monster)
+    {
+        SpriteRenderer renderer = monster.GetComponent<SpriteRenderer>();
+        Color originalColor = renderer.color;
+        renderer.color = Color.red;
+        yield return new WaitForSeconds(1f);
+        if (monster.Hp > 0)
+        {
+            renderer.color = originalColor;
+        }
+    }
+
+    private IEnumerator HandleHit(BoosMonster monster)
     {
         SpriteRenderer renderer = monster.GetComponent<SpriteRenderer>();
         Color originalColor = renderer.color;

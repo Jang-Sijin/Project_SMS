@@ -6,6 +6,7 @@ TagManager:
   tags:
   - DropItem
   - Monster
+  - BossMonster
   layers:
   - Default
   - TransparentFX

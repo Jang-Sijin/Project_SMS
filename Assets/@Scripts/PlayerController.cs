@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -90,9 +91,23 @@ public class PlayerController : MonoBehaviour
 
     private GameObject FindNearestMonster()
     {
-        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+        // 보스는 우선 1마리로 출현된다고 가정한다.
+        GameObject boss = GameObject.FindGameObjectWithTag("BossMonster");
+
+        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");        
+
         GameObject nearestMonster = null;
         float minDistance = Mathf.Infinity;
+
+        if(boss != null)
+        {
+            float distance = Vector2.Distance(transform.position, boss.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearestMonster = boss;
+            }
+        }
 
         foreach (GameObject monster in monsters)
         {
@@ -107,10 +122,18 @@ public class PlayerController : MonoBehaviour
         return nearestMonster;
     }
 
-    public void OnDamaged(Monster monster)
-    {
-        Hp = Math.Max(0, Hp - monster.Damage);
-    }
+    // 일반 몬스터 대미지 적용
+    //public void OnDamaged(Monster monster)
+    //{
+    //    Hp = Math.Max(0, Hp - monster.Damage);
+    //}
+
+
+    //// 보스 몬스터 대미지 적용
+    //public void OnDamaged(BoosMonster bossMonster)
+    //{
+    //    Hp = Math.Max(0, Hp - bossMonster.Damage);
+    //}
 
 
     // 대미지를 입었을 경우

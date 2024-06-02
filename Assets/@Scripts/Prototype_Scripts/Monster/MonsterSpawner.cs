@@ -4,7 +4,7 @@ using System.Threading;
 using UnityEngine;
 
 public class MonsterSpawner : MonoBehaviour
-{
+{       
     public GameObject monsterPrefab; // 몬스터 프리팹
     public float spawnInterval = 5f; // 몬스터 생성 주기 (초)
     public int monsterCount = 3; // 한 번에 생성되는 몬스터 수
@@ -14,13 +14,29 @@ public class MonsterSpawner : MonoBehaviour
     private Transform player;
     private List<GameObject> monsters = new List<GameObject>();
 
-    void Start()
+    #region 싱글톤
+    public static MonsterSpawner Instance { get; private set; }
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    #endregion
+
+    private void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
         StartCoroutine(SpawnMonsters());
     }
 
-    IEnumerator SpawnMonsters()
+    private IEnumerator SpawnMonsters()
     {
         while (true)
         {
@@ -33,7 +49,7 @@ public class MonsterSpawner : MonoBehaviour
                     if (monsters.Count >= maxMonsters) break;
 
                     Vector2 spawnPosition = (Vector2)player.position + Random.insideUnitCircle.normalized * spawnDistance;
-                    GameObject newMonster = Instantiate(monsterPrefab, spawnPosition, Quaternion.identity);
+                    GameObject newMonster = Instantiate(monsterPrefab, spawnPosition, Quaternion.identity, this.gameObject.transform);
                     monsters.Add(newMonster);
                     newMonster.GetComponent<Monster>().spawner = this;
                 }
@@ -41,8 +57,16 @@ public class MonsterSpawner : MonoBehaviour
         }
     }
 
+    // 몬스터 삭제
     public void RemoveMonster(GameObject monster)
     {
         monsters.Remove(monster);
+    }
+
+    //==========================================================================
+    //[public]
+    public void Active(bool isActive)
+    {
+        this.gameObject.SetActive(isActive);
     }
 }
