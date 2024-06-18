@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDamage: 10
+  ShadowGauge_Images: {fileID: 0}
 --- !u!50 &6157305951060383715
 Rigidbody2D:
   serializedVersion: 4

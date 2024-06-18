@@ -21,6 +21,8 @@ public class UI_ButtonManager : MonoBehaviour
     [SerializeField] private GameObject _monsterSpawner;
     [SerializeField] private GameObject _UIShadowMove;
 
+    [SerializeField] private UI_ShadowGauge UI_ShadowGauge;
+
     private void Start()
     {
         // 초기 세팅: 맵 A에서 시작하도록 설정
@@ -43,10 +45,11 @@ public class UI_ButtonManager : MonoBehaviour
             Map_B.SetActive(false);
 
             // 음영 게이지 비활성화
-            _UIShadowMove.SetActive(false);
+            //_UIShadowMove.SetActive(false);
             //StopCoroutine(ShadowGauge());
 
-            _monsterSpawner.SetActive(true);
+            _monsterSpawner.SetActive(true);            
+            UI_ShadowGauge.StartSubtractingShadowGaugeOverTime();
         }
         else // 맵 B인 경우
         {
@@ -54,11 +57,11 @@ public class UI_ButtonManager : MonoBehaviour
             Map_B.SetActive(true);
 
             // 음영 게이지 활성화
-            _UIShadowMove.SetActive(true);
+            //_UIShadowMove.SetActive(true);
             // StartCoroutine(ShadowGauge());
 
             _monsterSpawner.SetActive(false);
-            StartCoroutine(SkillCoolTime());
+            UI_ShadowGauge.StartAddingShadowGaugeOverTime();
         }
 
         StartCoroutine(SkillCoolTime());
@@ -98,17 +101,5 @@ public class UI_ButtonManager : MonoBehaviour
         _isCoolTime = false;
         _cooltimeTimer.gameObject.SetActive(false);
         MonsterSpawner.Instance.Active(true);
-    }
-
-    //
-    private IEnumerator ShadowGauge()
-    { 
-        while(true)
-        {
-            var component = _UIShadowMove.GetComponent<UI_ShadowGauge>();
-            
-            component.UpdateShadowGaugeUI();
-            yield return null;
-        }
     }
 }

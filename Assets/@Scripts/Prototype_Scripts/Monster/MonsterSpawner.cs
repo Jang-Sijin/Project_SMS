@@ -30,10 +30,23 @@ public class MonsterSpawner : MonoBehaviour
     }
     #endregion
 
+    private void OnEnable()
+    {
+        StartCoroutine(SpawnMonsters());
+    }
+
+    private void OnDisable()
+    {
+        StopCoroutine(SpawnMonsters());
+    }
+
     private void Start()
     {
-        player = GameObject.FindWithTag("Player").transform;
-        StartCoroutine(SpawnMonsters());
+        player = GameObject.FindWithTag("Player").transform;        
+    }
+
+    private void Update()
+    {
     }
 
     private IEnumerator SpawnMonsters()
