@@ -20,6 +20,9 @@ public class UI_ButtonManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _cooltimeTimer;
     [SerializeField] private GameObject _monsterSpawner;
     [SerializeField] private GameObject _UIShadowMove;
+    
+    // 스킬 쿨타임
+    private float cooltime = 0f;
 
     [SerializeField] private UI_ShadowGauge UI_ShadowGauge;
 
@@ -73,7 +76,7 @@ public class UI_ButtonManager : MonoBehaviour
         _isCoolTime = true; // *스킬 쿨타임 적용
         _isMapActive = !_isMapActive; // *맵 이동 적용
         float cooltimeMax = _coolTimeValue;
-        float cooltime = cooltimeMax;
+        cooltime = _coolTimeValue;
 
         if (_cooltimeTimer.gameObject.activeSelf == false)
             _cooltimeTimer.gameObject.SetActive(true);
@@ -99,6 +102,17 @@ public class UI_ButtonManager : MonoBehaviour
         }
 
         _isCoolTime = false;
+        _cooltimeTimer.gameObject.SetActive(false);
+        
+        MonsterSpawner.Instance.Active(true);
+    }
+
+    public void ResetSkillCoolTime()
+    {
+        _isCoolTime = false; // *스킬 쿨타임 적용
+        cooltime = 0f;
+
+        _cooltimeLoopImage.fillAmount = 0f;
         _cooltimeTimer.gameObject.SetActive(false);
         MonsterSpawner.Instance.Active(true);
     }

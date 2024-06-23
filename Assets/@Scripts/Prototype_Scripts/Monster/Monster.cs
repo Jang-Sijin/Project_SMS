@@ -6,10 +6,15 @@ public class Monster : MonoBehaviour
 {
     public float speed = 2f; // 몬스터 이동 속도    
     private int _damage = 5; // 몬스터 공격력
-    public GameObject itemPrefab; // 드롭할 아이템 프리팹
+    public GameObject itemPrefab; // 드롭할 아이템 프리팹   
     private Transform player;
     [HideInInspector] public MonsterSpawner spawner;
     private SpriteRenderer spriteRenderer;
+
+    // 아이템 드랍 확률 // 샘플 값: 20% 설정
+    public float itemDropPercent = 0.2f;
+    // 음영 이동 최초 사용 시, 공격력 2배 강화
+    public bool IsActionFirstSkill = false;
 
     public int HpMax = 100;
     private int _hp = 100; // 몬스터 체력
@@ -61,14 +66,18 @@ public class Monster : MonoBehaviour
             {
                 spawner.RemoveMonster(gameObject);
             }
-            DropItem();
+            CheckDropItem();
             gameObject.SetActive(false);
         }
     }
 
-    private void DropItem()
+    private void CheckDropItem()
     {
-        Instantiate(itemPrefab, transform.position, Quaternion.identity);
+        // N% 확률로 아이템이 드랍된다.
+        if (Random.value <= itemDropPercent)
+        {
+            Instantiate(itemPrefab, transform.position, Quaternion.identity);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

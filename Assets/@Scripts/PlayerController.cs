@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // Player는 State 패턴을 통해 상태가 전이되도록 구현 예정
-
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f; // 플레이어 이동 속도
@@ -121,20 +120,6 @@ public class PlayerController : MonoBehaviour
 
         return nearestMonster;
     }
-
-    // 일반 몬스터 대미지 적용
-    //public void OnDamaged(Monster monster)
-    //{
-    //    Hp = Math.Max(0, Hp - monster.Damage);
-    //}
-
-
-    //// 보스 몬스터 대미지 적용
-    //public void OnDamaged(BoosMonster bossMonster)
-    //{
-    //    Hp = Math.Max(0, Hp - bossMonster.Damage);
-    //}
-
 
     // 대미지를 입었을 경우
     public void TakeDamage(int damage)
